@@ -1,3 +1,4 @@
 pyasn1==0.4.8
 pysmb==1.2.8
 scapy==2.4.5
+Pillow

@@ -6,12 +6,14 @@ from smb.SMBConnection import SMBConnection
 from arp import scan_port, scan
 from concurrent.futures import ThreadPoolExecutor
 from PIL import ImageTk, Image
+import threading
 import socket
 from tkinter import N,S,W,E
 
-filename = ""
-
 def main():
+	filename = ""
+	selected_host = []
+
 	def openf():
 		global filename
 		filetypes = (
@@ -25,6 +27,7 @@ def main():
 			ent.insert("0", filename)
 
 	def scan_hosts():
+		selected_host.clear()
 		tree.delete(*tree.get_children())
 		results = scan("192.168.1.1/24")
 		with ThreadPoolExecutor(max_workers=6) as executor:
@@ -64,7 +67,7 @@ def main():
 	# 		except Exception as err:
 	# 			print(err)
 
-	selected_host = []
+
 	def toggleCheck(event):
 		rowid = tree.identify_row(event.y)
 		tag = tree.item(rowid, "tags")[0]
@@ -133,7 +136,7 @@ def main():
 	dbtn = tk.Button(wrapper2, text='Dispatch', command=batch_upload_file)
 	dbtn.pack(side=tk.RIGHT, padx=6)
 
-	scan_hosts()
+	threading.Thread(target=scan_hosts).start()
 
 
 
