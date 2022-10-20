@@ -31,7 +31,7 @@ def scan_port(ipaddress, port=139):
             print('[+] Open Port ' + str(port) + ' : ' + str(banner.decode().strip('\n').strip('\r')))
         except:
             print('[+] Open Port ' + str(port))
-        return (socket.gethostbyaddr(ipaddress)[0], ipaddress)
+        return (socket.gethostbyaddr(ipaddress)[0], ipaddress, "")
     except:
         return False
 

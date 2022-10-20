@@ -21,6 +21,7 @@ class App(Frame):
 		self.filemenu = tk.Menu(self.menubar, tearoff=0)
 		self.menubar.add_cascade(label='檔案', menu=self.filemenu)
 		self.filemenu.add_command(label='開啟舊檔', command=self.openf)
+		self.filemenu.add_command(label='設定目的資料夾', command=self.getf)
 
 		self.scanmenu = tk.Menu(self.menubar, tearoff=0)
 		self.menubar.add_cascade(label='主機', menu=self.scanmenu)
@@ -35,6 +36,7 @@ class App(Frame):
 
 		# var
 		self.filename = ""
+		self.dest = ""
 		self.hosts = []
 		self.myq = []
 		self.network_segment = "192.168.1.1/24"
@@ -63,13 +65,17 @@ class App(Frame):
 			('Text files', '*.txt'),
 			('All files', '*.*')
 		)
-		self.filename = fd.askopenfilename(title='開啟舊檔', initialdir='/', filetypes=filetypes)
+		self.filename = fd.askopenfilename(title='開啟檔案', initialdir='/', filetypes=filetypes)
 		print(self.filename)
 
+	def getf(self):
+		self.dest = fd.askdirectory(title='設定檔案目的地', initialdir='/')
+		print(self.dest)
+
 	def scan_hosts(self):
-		# self.master.config(cursor="watch")
-		# self.master.update()
-		# self.hosts.clear()
+		self.master.config(cursor="watch")
+		self.master.update()
+		self.hosts.clear()
 		self.treeview.delete(*self.treeview.get_children())
 		results = scan(self.network_segment)
 		with ThreadPoolExecutor(max_workers=64) as executor:
@@ -85,11 +91,13 @@ class App(Frame):
 
 	def upload_file(self):
 		try:
-			if not self.filename:
-				raise FileNotFoundError
+			status="Failed"
 			iid = self.treeview.selection()[0]
 			item = self.treeview.item(iid)
+			print(item)
 			hostname, ip, status = item["values"]
+			if not self.filename or not self.dest:
+				raise FileNotFoundError
 			self.treeview.item(iid, values=(hostname, ip, "Uploading..."))
 			conn = SMBConnection('username', 'password', 'any_name', hostname)
 			assert conn.connect(ip, timeout=3)
@@ -98,7 +106,7 @@ class App(Frame):
 				conn.storeFile(self.dest, self.filename.split('/')[-1], f)
 		except FileNotFoundError:
 			status = "Failed"
-			messagebox.showerror(title="SMB File Dispatcher", message="請載入您要傳送的檔案!")
+			messagebox.showerror(title="SMB File Dispatcher", message="請設定您要傳送的檔案以及目的地!")
 		except IndexError:
 			pass
 		except ConnectionRefusedError:
