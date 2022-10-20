@@ -85,6 +85,8 @@ class App(Frame):
 
 	def upload_file(self):
 		try:
+			if not self.filename:
+				raise FileNotFoundError
 			iid = self.treeview.selection()[0]
 			item = self.treeview.item(iid)
 			hostname, ip, status = item["values"]
