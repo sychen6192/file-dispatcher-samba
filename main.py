@@ -9,6 +9,8 @@ import threading
 from tkinter import simpledialog
 import base64, os
 from folder_icon import img
+from tkinter import Toplevel
+from network import Network
 
 
 class App(Frame):
@@ -135,8 +137,15 @@ class App(Frame):
 			self.treeview.item(iid, values=(hostname, ip, status))
 
 	def set_network_seg(self):
-		self.network_segment = simpledialog.askstring(title="SMB File Dispatcher", prompt="設定區網網段", parent=self.master)
+		self.networkpack = Toplevel(self)
+		self.networkpack.title("SMB File Dispatcher")
+		self.inusr = Network(self.networkpack)
 
+		# self.network_segment = simpledialog.askstring(title="SMB File Dispatcher", prompt="區網網段：", initialvalue="192.168.1.1/24")
+
+#network segment window center
+#loading cursor
+#strink size
 
 def main():
 	root = tk.Tk()
