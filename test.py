@@ -2,7 +2,7 @@ import socket
 from smb.SMBConnection import SMBConnection
 
 
-ip = '192.168.1.107'
+ip = '192.168.1.103'
 
 name = socket.gethostbyaddr(ip)
 ipGet = socket.gethostbyname(name[0])
