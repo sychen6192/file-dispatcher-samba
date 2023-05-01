@@ -3,17 +3,19 @@ from tkinter import ttk, Frame, messagebox
 from tkinter import N,S,W,E
 from tkinter import filedialog as fd
 from smb.SMBConnection import SMBConnection
-from arp import scan_port
+from libs.arp import scan_port
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import base64, os
-from folder_icon import img
+from libs.icon.folder_icon import img
 from tkinter import Toplevel
-from network import Network
+from libs.network import Network
 import ipaddress
 import speedcopy
 from loguru import logger
-
+from libs.credential import Encrypted, init_license
+import warnings
+warnings.filterwarnings('ignore')
 
 class Network:
     def __init__(self, master):
@@ -192,6 +194,7 @@ def main():
 	root.mainloop()
 
 
-
 if __name__ == '__main__':
-	main()
+	activation_code = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
+	if init_license(activation_code) == 1:
+		main()
