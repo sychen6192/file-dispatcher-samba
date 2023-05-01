@@ -12,5 +12,3 @@ pyinstaller-hooks-contrib==2022.10
 pysmb==1.2.8
 pywin32-ctypes==0.2.0
 scapy==2.4.5
-virtualenv==20.16.5
-virtualenv-clone==0.5.7

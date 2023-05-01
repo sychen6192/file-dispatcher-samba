@@ -11,6 +11,8 @@ from folder_icon import img
 from tkinter import Toplevel
 from network import Network
 import ipaddress
+import speedcopy
+from loguru import logger
 
 
 class Network:
@@ -96,19 +98,14 @@ class App(Frame):
 		self.grid_columnconfigure(0, weight=1)
 		self.i = 1
 
-
-
 	def openf(self):
 		filetypes = (
+			('All files', '*.*'),
 			('Executable files', '*.exe'),
-			('Text files', '*.txt'),
-			('All files', '*.*')
+			('Text files', '*.txt')
 		)
-		self.src = fd.askopenfilenames(title='開啟新檔案', initialdir='/', filetypes=filetypes)
-		if self.src:
-			self.filename = [item.split('/')[-1] for item in self.src]
-		print(self.src)
-		print(self.filename)
+		self.src = fd.askopenfilenames(title='開新檔案', initialdir='/', filetypes=filetypes)
+		logger.info(f"Set Source to: {self.src}")
 
 	def getf(self):
 		self.dest = fd.askdirectory(title='設定檔案目的地', initialdir='/')
@@ -116,11 +113,9 @@ class App(Frame):
 			if "//" not in self.dest:
 				self.dest = ""
 				messagebox.showerror(title="SMB File Dispatcher", message="請從網路芳鄰中選取主機")
-
 		else:
 			self.dest = ""
-			messagebox.showerror(title="SMB File Dispatcher", message="請從網路芳鄰中選取主機")
-		print(self.dest)
+		logger.info(f"Set Destination: {self.dest}")
 
 	def scan_hosts(self):
 		self.hosts = []
@@ -149,44 +144,28 @@ class App(Frame):
 			if not self.src or not self.dest:
 				raise FileNotFoundError
 			self.treeview.item(iid, values=(hostname, ip, "Uploading..."))
-			conn = SMBConnection('username', 'password', 'any_name', hostname)
-			assert conn.connect(ip, timeout=3)
-			for src_item, filename_item in zip(self.src, self.filename):
-				dest = self.dest.split('/')
-				shared_folder = dest[3]
-				if len(dest) > 4:
-					shared_path = '/' + '/'.join(dest[4:])
-				else:
-					shared_path = ''
-				with open(src_item, 'rb') as f:
-					# chinese
-					print(f"Transfer file on {shared_folder} to {shared_path}/{filename_item}")
-					conn.storeFile(shared_folder, f"{shared_path}/{filename_item}", f)
-					status = "Uploaded successfully"
+			for path in self.src:
+				if path:
+					filename = path.split("/")[-1]
+				logger.info(f"Transfer file from {path} to {self.dest}\\{filename}")
+				speedcopy.copyfile(path, f"{self.dest}\\{filename}")
+			status = "Uploaded successfully"
 		except FileNotFoundError:
 			status = "Uploading failed"
 			messagebox.showerror(title="SMB File Dispatcher", message="請設定您要傳送的檔案以及目的地")
 		except IndexError:
 			pass
-		except ConnectionRefusedError:
-			status = "Uploading failed"
-			messagebox.showerror(title="SMB File Dispatcher", message="連線失敗")
 		except Exception as err:
 			status = "Uploading failed"
-			# print(err)
+			logger.error(err)
 		finally:
 			self.treeview.item(iid, values=(hostname, ip, status))
-			conn.close()
 
 	def set_network_seg(self):
 		self.networkpack = Toplevel(self)
 		self.networkpack.title("網段設定")
 		Network(self.networkpack)
 
-	# def open_help(self):
-	# 	self.help = Toplevel(self)
-	# 	self.help.title("獲得幫助")
-	# 	Network(self.networkpack)
 
 
 def main():
@@ -202,7 +181,7 @@ def main():
 	y = (hs/2) - (h/2)
 
 	root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-	root.title("SMB File Dispatcher v1.1")
+	root.title("SMB File Dispatcher v1.2 beta")
 	# 加上icon
 	ico = open('folder.ico', 'wb+')
 	ico.write(base64.b64decode(img))  # 寫一個icon出來
