@@ -17,7 +17,7 @@ def Encrypted(code):
     return md5_code
 
 def init_license(key):
-    with open('./libs/license.dat', 'r') as f:
+    with open('./license.dat', 'r') as f:
         url = f.read().rstrip()
     license = license_key.init(license_json_url = url)
     return license.check(license_key = key)
