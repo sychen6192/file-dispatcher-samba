@@ -152,7 +152,7 @@ class App(Frame):
 				destination[2] = hostname
 				destination = '/'.join(destination)
 				logger.info(f"Transfer file from {path} to {destination}/{filename}")
-				speedcopy.copyfile(path, f"{self.dest}/{filename}")
+				speedcopy.copyfile(path, f"{destination}/{filename}")
 				status = "Uploaded successfully"
 		except FileNotFoundError:
 			status = "Uploading failed"
