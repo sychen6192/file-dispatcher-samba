@@ -191,7 +191,6 @@ def main():
 	ico.write(base64.b64decode(img))  # 寫一個icon出來
 	ico.close()
 	root.iconbitmap('folder.ico')  # 將icon嵌上視窗
-	os.remove('folder.ico')  # 把剛剛用完的檔案刪掉
 	app = App(root)
 	root.mainloop()
 

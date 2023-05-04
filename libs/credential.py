@@ -6,6 +6,7 @@ import warnings
 import license_key
 warnings.filterwarnings('ignore')
 
+LICENSE_URL = "https://gist.githubusercontent.com/sychen6192/82a0a3e2428d2dee0e55df2cdf95050b/raw"
 def Encrypted(code):
     Des_key = "posdvsgt"
     Des_IV = "\x11\2\x2a\3\1\x27\2\0"
@@ -17,10 +18,7 @@ def Encrypted(code):
     return md5_code
 
 def init_license(key):
-    with open('./license.dat', 'r') as f:
-        url = f.read().rstrip()
-    license = license_key.init(license_json_url = url)
-    return license.get(license_key = key, key = "expire")
+    license = license_key.init(license_json_url = LICENSE_URL)
     return license.check(license_key = key)
 
 if __name__ == "__main__":
