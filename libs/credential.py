@@ -20,6 +20,7 @@ def init_license(key):
     with open('./license.dat', 'r') as f:
         url = f.read().rstrip()
     license = license_key.init(license_json_url = url)
+    return license.get(license_key = key, key = "expire")
     return license.check(license_key = key)
 
 if __name__ == "__main__":
