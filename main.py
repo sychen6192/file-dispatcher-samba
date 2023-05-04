@@ -147,11 +147,13 @@ class App(Frame):
 				raise FileNotFoundError
 			self.treeview.item(iid, values=(hostname, ip, "Uploading..."))
 			for path in self.src:
-				if path:
-					filename = path.split("/")[-1]
-				logger.info(f"Transfer file from {path} to {self.dest}\\{filename}")
-				speedcopy.copyfile(path, f"{self.dest}\\{filename}")
-			status = "Uploaded successfully"
+				filename = path.split("/")[-1]
+				destination = self.dest.split("/")
+				destination[2] = hostname
+				destination = '/'.join(destination)
+				logger.info(f"Transfer file from {path} to {destination}/{filename}")
+				speedcopy.copyfile(path, f"{self.dest}/{filename}")
+				status = "Uploaded successfully"
 		except FileNotFoundError:
 			status = "Uploading failed"
 			messagebox.showerror(title="SMB File Dispatcher", message="請設定您要傳送的檔案以及目的地")
@@ -198,3 +200,7 @@ if __name__ == '__main__':
 	activation_code = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
 	if init_license(activation_code) == 1:
 		main()
+	else:
+		root = tk.Tk()
+		root.withdraw()
+		tk.messagebox.showerror("SMB File Dispatcher", "License expired")
