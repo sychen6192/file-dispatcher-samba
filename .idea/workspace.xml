@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="6a56abb0-c17d-485d-a145-a959c4f2252c" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/credential.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/credential.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

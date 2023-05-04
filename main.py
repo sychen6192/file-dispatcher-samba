@@ -200,7 +200,6 @@ if __name__ == '__main__':
 	activation_code = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
 	if init_license(activation_code) == 1:
 		main()
-		#https://gist.githubusercontent.com/sychen6192/82a0a3e2428d2dee0e55df2cdf95050b/raw
 	else:
 		root = tk.Tk()
 		root.withdraw()
