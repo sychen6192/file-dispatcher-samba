@@ -146,9 +146,9 @@ class App(Frame):
 			self.treeview.item(iid, values=(hostname, ip_address, "上傳中..."))
 			for src_item in self.src:
 				if self.dest_path:
-					destination = fr'//{hostname}/{self.dest_folder}/{self.dest_path}/{src_item.split("/")[-1]}'
+					destination = fr'//{ip_address}/{self.dest_folder}/{self.dest_path}/{src_item.split("/")[-1]}'
 				else:
-					destination = fr'//{hostname}/{self.dest_folder}/{src_item.split("/")[-1]}'
+					destination = fr'//{ip_address}/{self.dest_folder}/{src_item.split("/")[-1]}'
 				logger.info(f"Transfer file from {src_item} to {destination}")
 				speedcopy.copyfile(src_item, f"{destination}")
 			status = "上傳成功"
