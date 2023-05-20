@@ -13,6 +13,7 @@ import ipaddress
 import speedcopy
 from loguru import logger
 from libs.credential import Encrypted, init_license
+from core.exception import SourceNotFoundException
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -141,17 +142,19 @@ class App(Frame):
 			item = self.treeview.item(iid)
 			hostname, ip_address, status = item["values"]
 			if not self.src:
-				raise FileNotFoundError
+				raise SourceNotFoundException
 			self.treeview.item(iid, values=(hostname, ip_address, "Uploading..."))
 			for src_item in self.src:
 				destination = fr'//{hostname}/{self.dest_folder}/{self.dest_path}{src_item.split("/")[-1]}'
 				logger.info(f"Transfer file from {src_item} to {destination}")
 				speedcopy.copyfile(src_item, f"{destination}")
 			status = "上傳成功"
-
+		except SourceNotFoundException:
+			status = "上傳失敗"
+			messagebox.showerror(title="SMB File Dispatcher", message="請選擇欲傳送檔案")
 		except FileNotFoundError:
 			status = "上傳失敗"
-			messagebox.showerror(title="SMB File Dispatcher", message="請設定您要傳送的檔案以及目的地")
+			messagebox.showerror(title="SMB File Dispatcher", message="請確認共享資料夾是否存在")
 		except IndexError:
 			pass
 		except Exception as err:
