@@ -186,7 +186,7 @@ def main():
 	y = (hs/2) - (h/2)
 
 	root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-	root.title("SMB File Dispatcher v1.2 beta")
+	root.title("SMB File Dispatcher v2.0")
 	# 加上icon
 	ico = open('folder.ico', 'wb+')
 	ico.write(base64.b64decode(img))  # 寫一個icon出來
