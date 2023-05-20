@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk, Frame, messagebox
 from tkinter import N,S,W,E
 from tkinter import filedialog as fd
-from smb.SMBConnection import SMBConnection
 from libs.arp import scan_port
 from concurrent.futures import ThreadPoolExecutor
 import threading
@@ -17,6 +16,7 @@ from libs.credential import Encrypted, init_license
 import warnings
 warnings.filterwarnings('ignore')
 
+ACTIVATION_CODE = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
 class Network:
     def __init__(self, master):
         self.master = master
@@ -68,16 +68,14 @@ class App(Frame):
 
 		self.helpmenu = tk.Menu(self.menubar, tearoff=0)
 		self.menubar.add_cascade(label='幫助', menu=self.helpmenu)
-
+		self.helpmenu.add_command(label='驗證序號', command=self.show_license)
 
 		self.master.config(menu=self.menubar)
 
 		# var
 		self.src = ""
-		self.filename = ""
-		self.dest = ""
-		self.remote = ""
-		self.remotepath = ""
+		self.dest_folder = "dynacard"
+		self.dest_path = ""
 		self.hosts = []
 		self.myq = []
 		self.network_segment = "192.168.1.0/24"
@@ -110,60 +108,57 @@ class App(Frame):
 		logger.info(f"Set Source to: {self.src}")
 
 	def getf(self):
-		self.dest = fd.askdirectory(title='設定檔案目的地', initialdir='/')
-		if self.dest:
-			if "//" not in self.dest:
-				self.dest = ""
-				messagebox.showerror(title="SMB File Dispatcher", message="請從網路芳鄰中選取主機")
-		else:
-			self.dest = ""
-		logger.info(f"Set Destination: {self.dest}")
+		destination = fd.askdirectory(title='設定檔案目的地', initialdir='/')
+		if destination:
+			self.dest_folder = destination.split("/")[3]
+			self.dest_path = "/".join(destination.split("/")[4:])
+			logger.info(f"Set Destination: {self.dest_folder}/{self.dest_path}")
 
 	def scan_hosts(self):
 		self.hosts = []
 		self.master.config(cursor="watch")
 		self.master.update()
 		self.treeview.delete(*self.treeview.get_children())
-		# results = scan(self.network_segment)
 		hosts_ip = [str(ip) for ip in ipaddress.IPv4Network(self.network_segment)]
 		with ThreadPoolExecutor(max_workers=255) as executor:
 			self.hosts = executor.map(scan_port, hosts_ip)
-		# self.hosts = [(f"host_{i}", f"192.168.1.{i}", "test") for i in range(1,255)]
 		for host in self.hosts:
 			if host:
 				self.treeview.insert('', tk.END, values=host)
 		self.master.config(cursor="")
+
+	def show_license(self):
+		tk.messagebox.showinfo(title="SMB File Dispatcher", message=f"Your license code: {ACTIVATION_CODE}")
+
 
 	def trigger_upload(self, event):
 		threading.Thread(target=self.upload_file).start()
 
 	def upload_file(self):
 		try:
-			status = "Processing..."
+			status = "處理中..."
 			iid = self.treeview.selection()[0]
 			item = self.treeview.item(iid)
-			hostname, ip, status = item["values"]
-			if not self.src or not self.dest:
+			hostname, ip_address, status = item["values"]
+			if not self.src:
 				raise FileNotFoundError
-			self.treeview.item(iid, values=(hostname, ip, "Uploading..."))
-			for path in self.src:
-				filename = path.split("/")[-1]
-				destination = self.dest.split("/")
-				destination[2] = hostname
-				destination = '/'.join(destination)
-				logger.info(f"Transfer file from {path} to {destination}/{filename}")
-				speedcopy.copyfile(path, f"{destination}/{filename}")
-				status = "Uploaded successfully"
+			self.treeview.item(iid, values=(hostname, ip_address, "Uploading..."))
+			for src_item in self.src:
+				destination = fr'//{hostname}/{self.dest_folder}/{self.dest_path}/{src_item.split("/")[-1]}'
+				logger.info(f"Transfer file from {src_item} to {destination}")
+				speedcopy.copyfile(src_item, f"{destination}")
+			status = "上傳成功"
+
 		except FileNotFoundError:
-			status = "Uploading failed"
+			status = "上傳失敗"
 			messagebox.showerror(title="SMB File Dispatcher", message="請設定您要傳送的檔案以及目的地")
 		except IndexError:
 			pass
 		except Exception as err:
-			status = "Uploading failed"
+			status = "上傳失敗"
 			logger.error(err)
 		finally:
-			self.treeview.item(iid, values=(hostname, ip, status))
+			self.treeview.item(iid, values=(hostname, ip_address, status))
 
 	def set_network_seg(self):
 		self.networkpack = Toplevel(self)
@@ -197,11 +192,10 @@ def main():
 
 
 if __name__ == '__main__':
-	activation_code = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
-	if init_license(activation_code) == 1:
+	if init_license(ACTIVATION_CODE) == 1:
 		main()
 		#https://gist.githubusercontent.com/sychen6192/82a0a3e2428d2dee0e55df2cdf95050b/raw
 	else:
 		root = tk.Tk()
 		root.withdraw()
-		tk.messagebox.showerror("SMB File Dispatcher", "License expired")
+		tk.messagebox.showerror("SMB File Dispatcher", "License Expired")
