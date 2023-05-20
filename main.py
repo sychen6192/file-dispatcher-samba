@@ -105,14 +105,14 @@ class App(Frame):
 			('Text files', '*.txt')
 		)
 		self.src = fd.askopenfilenames(title='開新檔案', initialdir='/', filetypes=filetypes)
-		logger.info(f"Set Source to: {self.src}")
+		if self.src: logger.info(f"Set Source to: {self.src}")
 
 	def getf(self):
 		destination = fd.askdirectory(title='設定檔案目的地', initialdir='/')
 		if destination:
 			self.dest_folder = destination.split("/")[3]
 			self.dest_path = "/".join(destination.split("/")[4:])
-			logger.info(f"Set Destination: {self.dest_folder}/{self.dest_path}")
+			logger.info(f"Set Share folder: /{self.dest_folder}/{self.dest_path}")
 
 	def scan_hosts(self):
 		self.hosts = []
@@ -144,7 +144,7 @@ class App(Frame):
 				raise FileNotFoundError
 			self.treeview.item(iid, values=(hostname, ip_address, "Uploading..."))
 			for src_item in self.src:
-				destination = fr'//{hostname}/{self.dest_folder}/{self.dest_path}/{src_item.split("/")[-1]}'
+				destination = fr'//{hostname}/{self.dest_folder}/{self.dest_path}{src_item.split("/")[-1]}'
 				logger.info(f"Transfer file from {src_item} to {destination}")
 				speedcopy.copyfile(src_item, f"{destination}")
 			status = "上傳成功"
