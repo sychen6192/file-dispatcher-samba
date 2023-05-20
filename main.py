@@ -186,7 +186,6 @@ def main():
 	ico.write(base64.b64decode(img))  # 寫一個icon出來
 	ico.close()
 	root.iconbitmap('folder.ico')  # 將icon嵌上視窗
-	os.remove('folder.ico')  # 把剛剛用完的檔案刪掉
 	app = App(root)
 	root.mainloop()
 
@@ -194,7 +193,6 @@ def main():
 if __name__ == '__main__':
 	if init_license(ACTIVATION_CODE) == 1:
 		main()
-		#https://gist.githubusercontent.com/sychen6192/82a0a3e2428d2dee0e55df2cdf95050b/raw
 	else:
 		root = tk.Tk()
 		root.withdraw()

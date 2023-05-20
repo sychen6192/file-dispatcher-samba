@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6a56abb0-c17d-485d-a145-a959c4f2252c" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/folder.ico" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/credential.py" beforeDir="false" afterPath="$PROJECT_DIR$/libs/credential.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +33,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/libs" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\USER\file-dispatcher-samba\libs" />
+      <recent name="C:\Users\USER\file-dispatcher-samba" />
+    </key>
   </component>
   <component name="RunManager" selected="Python.main (1)">
     <configuration name="arp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -191,30 +198,38 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
+    <state x="1023" y="503" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1683218337098">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1023" y="503" key="#com.intellij.fileTypes.FileTypeChooser/0.0.2560.1400@0.0.2560.1400" timestamp="1683218337098" />
+    <state x="1010" y="447" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1683219640744">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="1010" y="447" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.2560.1400@0.0.2560.1400" timestamp="1683219640744" />
     <state x="992" y="325" key="#main_(1)" timestamp="1678205914191">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="992" y="325" key="#main_(1)/0.0.2560.1400@0.0.2560.1400" timestamp="1678205914191" />
-    <state width="2539" height="283" key="GridCell.Tab.0.bottom" timestamp="1682934563698">
+    <state width="2539" height="283" key="GridCell.Tab.0.bottom" timestamp="1683218902548">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2539" height="283" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.0.1920.1040@0.0.2560.1400" timestamp="1682873040373" />
-    <state width="2539" height="283" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1682934563698" />
-    <state width="2539" height="283" key="GridCell.Tab.0.center" timestamp="1682934563697">
+    <state width="2539" height="283" key="GridCell.Tab.0.bottom/0.0.2560.1400@0.0.2560.1400" timestamp="1683218902548" />
+    <state width="2539" height="283" key="GridCell.Tab.0.center" timestamp="1683218902548">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2539" height="283" key="GridCell.Tab.0.center/0.0.2560.1400/2560.0.1920.1040@0.0.2560.1400" timestamp="1682873040373" />
-    <state width="2539" height="283" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1682934563697" />
-    <state width="2539" height="283" key="GridCell.Tab.0.left" timestamp="1682934563696">
+    <state width="2539" height="283" key="GridCell.Tab.0.center/0.0.2560.1400@0.0.2560.1400" timestamp="1683218902548" />
+    <state width="2539" height="283" key="GridCell.Tab.0.left" timestamp="1683218902547">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2539" height="283" key="GridCell.Tab.0.left/0.0.2560.1400/2560.0.1920.1040@0.0.2560.1400" timestamp="1682873040373" />
-    <state width="2539" height="283" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1682934563696" />
-    <state width="2539" height="283" key="GridCell.Tab.0.right" timestamp="1682934563697">
+    <state width="2539" height="283" key="GridCell.Tab.0.left/0.0.2560.1400@0.0.2560.1400" timestamp="1683218902547" />
+    <state width="2539" height="283" key="GridCell.Tab.0.right" timestamp="1683218902548">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="2539" height="283" key="GridCell.Tab.0.right/0.0.2560.1400/2560.0.1920.1040@0.0.2560.1400" timestamp="1682873040373" />
-    <state width="2539" height="283" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1682934563697" />
+    <state width="2539" height="283" key="GridCell.Tab.0.right/0.0.2560.1400@0.0.2560.1400" timestamp="1683218902548" />
     <state x="781" y="342" key="SettingsEditor" timestamp="1682872847161">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
