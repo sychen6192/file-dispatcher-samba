@@ -8,7 +8,6 @@ import threading
 import base64, os
 from libs.icon.folder_icon import img
 from tkinter import Toplevel
-from libs.network import Network
 import ipaddress
 import speedcopy
 from loguru import logger
@@ -69,7 +68,7 @@ class App(Frame):
 
 		self.helpmenu = tk.Menu(self.menubar, tearoff=0)
 		self.menubar.add_cascade(label='幫助', menu=self.helpmenu)
-		self.helpmenu.add_command(label='驗證序號', command=self.show_license)
+		self.helpmenu.add_command(label='認證序號', command=self.show_license)
 
 		self.master.config(menu=self.menubar)
 
@@ -78,7 +77,6 @@ class App(Frame):
 		self.dest_folder = "dynacard"
 		self.dest_path = ""
 		self.hosts = []
-		self.myq = []
 		self.network_segment = "192.168.1.0/24"
 		self.treeview.bind("<Double-1>", self.trigger_upload)
 		threading.Thread(target=self.scan_hosts).start()
@@ -121,7 +119,7 @@ class App(Frame):
 		self.master.update()
 		self.treeview.delete(*self.treeview.get_children())
 		hosts_ip = [str(ip) for ip in ipaddress.IPv4Network(self.network_segment)]
-		with ThreadPoolExecutor(max_workers=255) as executor:
+		with ThreadPoolExecutor(max_workers=32) as executor:
 			self.hosts = executor.map(scan_port, hosts_ip)
 		for host in self.hosts:
 			if host:

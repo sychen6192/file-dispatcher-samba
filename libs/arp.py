@@ -1,25 +1,9 @@
-import scapy.all as scapy
 import socket
 from concurrent.futures import ThreadPoolExecutor
-
-
-# def scan(ip):
-#     arp_request = scapy.ARP(pdst=ip)
-#     broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
-#     arp_request_broadcast = broadcast/arp_request
-#     answered_list, unanswered_list = scapy.srp(arp_request_broadcast, timeout=1, verbose=False)
-#
-#     print("IP\t\t\tMAC Address\n-------------------------------------------")
-#     IPs = []
-#     for element in answered_list:
-#         print(element[1].psrc + "\t\t" + element[1].hwsrc)
-#         IPs.append(element[1].psrc)
-#     return IPs
-
+from loguru import logger
 
 def get_banner(s):
     return s.recv(1024)
-
 
 def scan_port(ipaddress, port=139):
     try:
@@ -28,16 +12,14 @@ def scan_port(ipaddress, port=139):
         sock.connect((ipaddress, port))
         try:
             banner = get_banner(sock)
-            print('[+] Open Port ' + str(port) + ' : ' + str(banner.decode().strip('\n').strip('\r')))
-        except:
-            print(f'[+] Open Port {ipaddress}:{port}')
+            logger.info('[+] Open Port ' + str(port) + ' : ' + str(banner.decode().strip('\n').strip('\r')))
+        except Exception:
+            logger.info(f'[+] Open Port {ipaddress}:{port}')
         return (socket.gethostbyaddr(ipaddress)[0], ipaddress, "")
-    except:
+    except Exception:
         return False
 
 if __name__ == "__main__":
-    # results = scan("192.168.1.1/24")
-    # print(results)
     results = [ f"192.168.1.{i}" for i in range(1, 255)]
     with ThreadPoolExecutor(max_workers=255) as executor:
         executor.map(scan_port, results)

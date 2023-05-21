@@ -14,7 +14,6 @@ def Encrypted(code):
     EncryptStr = k.encrypt(code)
     base64_code = base64.b32encode(EncryptStr)
     md5_code = hashlib.md5(base64_code).hexdigest().upper()
-
     return md5_code
 
 def init_license(key):
