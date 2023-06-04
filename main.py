@@ -16,7 +16,6 @@ from core.exception import SourceNotFoundException
 import warnings
 warnings.filterwarnings('ignore')
 
-ACTIVATION_CODE = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
 class Network:
     def __init__(self, master):
         self.master = master
@@ -73,6 +72,7 @@ class App(Frame):
 		self.master.config(menu=self.menubar)
 
 		# var
+		self.title = APP_TITLE
 		self.src = ""
 		self.dest_folder = "dynacard"
 		self.dest_path = ""
@@ -103,11 +103,11 @@ class App(Frame):
 			('Executable files', '*.exe'),
 			('Text files', '*.txt')
 		)
-		self.src = fd.askopenfilenames(title='開新檔案', initialdir='/', filetypes=filetypes)
+		self.src = fd.askopenfilenames(title=f'{self.title} - 開新檔案', initialdir='/', filetypes=filetypes)
 		if self.src: logger.info(f"Set Source to: {self.src}")
 
 	def getf(self):
-		destination = fd.askdirectory(title='設定檔案目的地', initialdir='/')
+		destination = fd.askdirectory(title=f'{self.title} - 設定檔案目的地', initialdir='/')
 		if destination:
 			self.dest_folder = destination.split("/")[3]
 			self.dest_path = "/".join(destination.split("/")[4:])
@@ -127,7 +127,8 @@ class App(Frame):
 		self.master.config(cursor="")
 
 	def show_license(self):
-		tk.messagebox.showinfo(title="SMB File Dispatcher", message=f"Your license code: {ACTIVATION_CODE}")
+		tk.messagebox.showinfo(title=self.title, message=f"Your license code: {ACTIVATION_CODE}")
+		logger.info(self.network_segment)
 
 
 	def trigger_upload(self, event):
@@ -152,10 +153,10 @@ class App(Frame):
 			status = "上傳成功"
 		except SourceNotFoundException:
 			status = "上傳失敗"
-			messagebox.showerror(title="SMB File Dispatcher", message="請選擇欲傳送檔案")
+			messagebox.showerror(title=self.title, message="請選擇欲傳送檔案")
 		except FileNotFoundError:
 			status = "上傳失敗"
-			messagebox.showerror(title="SMB File Dispatcher", message="請確認共享資料夾是否存在")
+			messagebox.showerror(title=self.title, message="請確認共享資料夾是否存在")
 		except IndexError:
 			pass
 		except Exception as err:
@@ -184,7 +185,7 @@ def main():
 	y = (hs/2) - (h/2)
 
 	root.geometry('%dx%d+%d+%d' % (w, h, x, y))
-	root.title("SMB File Dispatcher v2.0")
+	root.title(APP_TITLE)
 	# 加上icon
 	ico = open('folder.ico', 'wb+')
 	ico.write(base64.b64decode(img))  # 寫一個icon出來
@@ -195,9 +196,11 @@ def main():
 
 
 if __name__ == '__main__':
+	APP_TITLE = "[DYNAC] SMB File Dispatcher"
+	ACTIVATION_CODE = "QNFUN-HQXLL-C3M1A-K7J9C-UMKGT"
 	if init_license(ACTIVATION_CODE) == 1:
 		main()
 	else:
 		root = tk.Tk()
 		root.withdraw()
-		tk.messagebox.showerror("SMB File Dispatcher", "License Expired")
+		tk.messagebox.showerror(APP_TITLE, "License Expired")
